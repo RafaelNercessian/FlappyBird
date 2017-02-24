@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Random;
@@ -51,9 +52,6 @@ public class FlappyBird extends ApplicationAdapter {
         numerosRandomico=new Random();
         fonte=new BitmapFont();
         passaroCirculo=new Circle();
-        retanguloCanoTopo =new Rectangle();
-        retanguloCanoBaixo =new Rectangle();
-        shape=new ShapeRenderer();
 
         fonte.setColor(Color.WHITE);
         fonte.getData().setScale(6);
@@ -121,14 +119,11 @@ public class FlappyBird extends ApplicationAdapter {
         retanguloCanoBaixo=new Rectangle(posicaoMovimentoCanoHorizontal,alturaDispositivo/2-canoBaixo.getHeight()-espacoCanos/2+alturaEntreCanosRandomica,canoBaixo.getWidth(),canoBaixo.getHeight());
 
         retanguloCanoTopo=new Rectangle(posicaoMovimentoCanoHorizontal,alturaDispositivo/2+espacoCanos/2+alturaEntreCanosRandomica,canoAlto.getWidth(),canoAlto.getHeight());
-        //Desenhando formas
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-        shape.circle(passaroCirculo.x,passaroCirculo.y,passaroCirculo.radius);
-        shape.rect(retanguloCanoBaixo.x,retanguloCanoBaixo.y,retanguloCanoBaixo.width,retanguloCanoBaixo.height);
-        shape.rect(retanguloCanoTopo.x,retanguloCanoTopo.y,retanguloCanoTopo.width,retanguloCanoTopo.height);
-        shape.setColor(Color.RED);
-        shape.end();
 
+        //Teste de colisão
+        if(Intersector.overlaps(passaroCirculo,retanguloCanoBaixo) || Intersector.overlaps(passaroCirculo,retanguloCanoTopo)){
+            Gdx.app.log("Colisão","houve colisão");
+        }
 
 
     }
