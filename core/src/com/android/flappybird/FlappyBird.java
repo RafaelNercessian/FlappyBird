@@ -2,19 +2,15 @@ package com.android.flappybird;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import org.w3c.dom.Text;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Random;
-import java.util.logging.StreamHandler;
 
 public class FlappyBird extends ApplicationAdapter {
 
@@ -37,6 +33,10 @@ public class FlappyBird extends ApplicationAdapter {
     private BitmapFont fonte;
     private int pontuacao=0;
     private boolean marcouPonto;
+    private Circle passaroCirculo;
+    private Rectangle retanguloCanoTopo;
+    private Rectangle retanguloCanoBaixo;
+    private ShapeRenderer shape;
 
     @Override
     public void create() {
@@ -50,6 +50,10 @@ public class FlappyBird extends ApplicationAdapter {
         canoAlto=new Texture("cano_topo_maior.png");
         numerosRandomico=new Random();
         fonte=new BitmapFont();
+        passaroCirculo=new Circle();
+        retanguloCanoTopo =new Rectangle();
+        retanguloCanoBaixo =new Rectangle();
+        shape=new ShapeRenderer();
 
         fonte.setColor(Color.WHITE);
         fonte.getData().setScale(6);
@@ -110,6 +114,23 @@ public class FlappyBird extends ApplicationAdapter {
         batch.draw(passaros[(int) variacao], 180, posicaoVertical);
         fonte.draw(batch, String.valueOf(pontuacao),larguraDispositivo/2,alturaDispositivo-50);
         batch.end();
+
+
+        passaroCirculo.set(180+passaros[0].getWidth()/2,posicaoVertical+passaros[0].getHeight()/2,30);
+
+        retanguloCanoBaixo=new Rectangle(posicaoMovimentoCanoHorizontal,alturaDispositivo/2-canoBaixo.getHeight()-espacoCanos/2+alturaEntreCanosRandomica,canoBaixo.getWidth(),canoBaixo.getHeight());
+
+        retanguloCanoTopo=new Rectangle(posicaoMovimentoCanoHorizontal,alturaDispositivo/2+espacoCanos/2+alturaEntreCanosRandomica,canoAlto.getWidth(),canoAlto.getHeight());
+        //Desenhando formas
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        shape.circle(passaroCirculo.x,passaroCirculo.y,passaroCirculo.radius);
+        shape.rect(retanguloCanoBaixo.x,retanguloCanoBaixo.y,retanguloCanoBaixo.width,retanguloCanoBaixo.height);
+        shape.rect(retanguloCanoTopo.x,retanguloCanoTopo.y,retanguloCanoTopo.width,retanguloCanoTopo.height);
+        shape.setColor(Color.RED);
+        shape.end();
+
+
+
     }
 
     @Override
